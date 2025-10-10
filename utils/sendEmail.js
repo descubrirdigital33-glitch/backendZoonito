@@ -1,15 +1,15 @@
-const nodemailer = require('nodemailer');
+const nodemailer = require("nodemailer");
 
-const sendEmail = async (to, subject, text) => {
+const sendEmail = async (to, subject, text = "", html = "") => {
   try {
     const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST, // smtp.gmail.com
-      port: parseInt(process.env.SMTP_PORT || '587', 10), // 587
-      secure: false, // true si usas 465
+      host: process.env.SMTP_HOST,
+      port: parseInt(process.env.SMTP_PORT || "587", 10),
+      secure: false,
       auth: {
         user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS
-      }
+        pass: process.env.SMTP_PASS,
+      },
     });
 
     await transporter.sendMail({
@@ -17,12 +17,12 @@ const sendEmail = async (to, subject, text) => {
       to,
       subject,
       text,
-      html
+      html, // ahora html está definido
     });
 
     console.log(`Correo enviado a ${to}`);
   } catch (error) {
-    console.error('Error enviando correo:', error);
+    console.error("Error enviando correo:", error);
   }
 };
 
