@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded({ extended: true, limit: "10mb" }));
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    'https://front-zoonito-hgzj35gj5-gabriels-projects-ae3347a7.vercel.app' // producción
     credentials: true,
   })
 );
@@ -53,4 +53,5 @@ mongoose
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Servidor corriendo en puerto ${PORT}`));
+
 
