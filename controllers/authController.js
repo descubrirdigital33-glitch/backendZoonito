@@ -12,7 +12,7 @@ const generateVerificationCode = () => {
   return Math.floor(100000 + Math.random() * 900000).toString();
 };
 
-// Plantilla de correo de verificación
+// Plantilla profesional de correo de verificación
 const generateEmailTemplate = (name, code) => {
   return `
   <!DOCTYPE html>
@@ -20,9 +20,9 @@ const generateEmailTemplate = (name, code) => {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Código de Verificación</title>
+    <title>Código de Verificación MusicApp</title>
   </head>
-  <body style="margin:0; padding:0; font-family: Arial, sans-serif; background: #f4f4f8;">
+  <body style="margin:0; padding:0; font-family: Arial, sans-serif; background:#f4f4f8;">
     <table align="center" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px; background:#ffffff; border-radius:12px; overflow:hidden;">
       <tr>
         <td style="background: linear-gradient(135deg, #7c3aed, #3b82f6); text-align:center; padding:40px 20px;">
@@ -36,7 +36,7 @@ const generateEmailTemplate = (name, code) => {
           <div style="font-size:32px; font-weight:bold; color:#7c3aed; background:#e0e7ff; display:inline-block; padding:15px 30px; border-radius:8px; letter-spacing:4px;">
             ${code}
           </div>
-          <p style="font-size:14px; color:#555; margin-top:30px;">Ingresa este código en la app para verificar tu cuenta. Si no solicitaste este correo, puedes ignorarlo.</p>
+          <p style="font-size:14px; color:#555; margin-top:30px;">Ingresa este código en la app para verificar tu cuenta. Si no solicitaste este correo, ignóralo.</p>
         </td>
       </tr>
       <tr>
@@ -68,11 +68,12 @@ exports.register = async (req, res) => {
       verificationCode,
     });
 
-    // Enviar email de verificación con plantilla
+    // Enviar email de verificación con plantilla HTML
     await sendEmail(
       user.email,
       "Código de verificación MusicApp",
-      generateEmailTemplate(user.name, verificationCode)
+      null, // texto plano opcional
+      generateEmailTemplate(user.name, verificationCode) // aquí va el HTML
     );
 
     res.status(201).json({
@@ -87,6 +88,7 @@ exports.register = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
 
 // Verificación de email con código
 exports.verifyEmail = async (req, res) => {
@@ -127,7 +129,7 @@ exports.resendVerificationCode = async (req, res) => {
     await sendEmail(
       user.email,
       "Nuevo código de verificación MusicApp",
-      generateEmailTemplate(user.name, verificationCode)
+      `Hola ${user.name}, tu nuevo código de verificación es: ${verificationCode}`
     );
 
     res.json({ message: "Se envió un nuevo código de verificación" });
@@ -162,27 +164,33 @@ exports.login = async (req, res) => {
   }
 };
 
-// Middleware de autenticación
 exports.authMiddleware = async (req, res, next) => {
   try {
+    // 1️⃣ Tomamos el token de la cabecera Authorization
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return res
         .status(401)
-        .json({ message: "Usuario no autenticado" });
+        .json({
+          message:
+            "Usuario no autenticado sto que seria de la parte del backend por que no se si es asi",
+        });
     }
 
     const token = authHeader.split(" ")[1];
 
+    // 2️⃣ Decodificamos el token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     if (!decoded.id) {
       return res.status(401).json({ message: "Token inválido" });
     }
 
+    // 3️⃣ Buscamos el usuario en la DB
     const user = await Usuario.findById(decoded.id);
     if (!user)
       return res.status(401).json({ message: "Usuario no encontrado" });
 
+    // 4️⃣ Guardamos el usuario en req.user
     req.user = user;
     next();
   } catch (err) {
