@@ -39,6 +39,9 @@ app.use("/api/cds", cdRoutes);
 app.use("/api/eventos/patrocinioRoutes", patrocinioRoutes);
 app.use("/api/avisoadmin", avisosRoutes);
 
+app.get("/api/test", (req, res) => {
+  res.send("¡Vamos bien!");
+});
 // Conexión a MongoDB
 mongoose
   .connect(process.env.MONGO_URI, {
@@ -50,3 +53,4 @@ mongoose
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Servidor corriendo en puerto ${PORT}`));
+
