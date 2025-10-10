@@ -16,7 +16,8 @@ const sendEmail = async (to, subject, text) => {
       from: `"MusicApp" <${process.env.SMTP_USER}>`,
       to,
       subject,
-      text
+      text,
+      html
     });
 
     console.log(`Correo enviado a ${to}`);
