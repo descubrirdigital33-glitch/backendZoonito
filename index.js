@@ -141,7 +141,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 // ⭐ IMPORTANTE: Manejar preflight requests (OPTIONS)
-app.options("*", cors(corsOptions));
+app.options("/api/*", cors(corsOptions));
 
 // ===== ROUTES =====
 app.use("/api/eventos", eventoRoutes);
@@ -205,3 +205,4 @@ app.listen(PORT, () => {
 });
 
 module.exports = app;
+
