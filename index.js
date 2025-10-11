@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded({ extended: true, limit: "10mb" }));
 
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://front-zoonito-hgzj35gj5-gabriels-projects-ae3347a7.vercel.app"
+  "https://front-zoonito.vercel.app"
 ];
 
 app.use(
@@ -205,5 +205,6 @@ app.listen(PORT, () => console.log(`Servidor corriendo en puerto ${PORT}`));
 // });
 
 // module.exports = app;
+
 
 
