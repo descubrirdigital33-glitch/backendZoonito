@@ -46,7 +46,7 @@ router.get('/:id', async (req, res) => {
   if (!music) return res.status(404).send('Canción no encontrada');
 
   const title = `${music.title} - ${music.artist}`;
-  const description = `Escuchá "${music.title}" de ${music.artist}. ⭐ ${music.rating?.toFixed(1) || '0.0'}/5 - ❤️ ${music.likes || 0} likes`;
+  const description = `Escuchá en estas radio lo mejor para que puedas ver "${music.title}" de ${music.artist}. ⭐ ${music.rating?.toFixed(1) || '0.0'}/5 - ❤️ ${music.likes || 0} likes`;
   const imageUrl = music.coverUrl || 'https://front-zoonito.vercel.app/assets/zoonito.jpg';
   const frontUrl = `https://front-zoonito.vercel.app/share?id=${music._id}`;
 
@@ -74,3 +74,4 @@ router.get('/:id', async (req, res) => {
 });
 
 module.exports = router;
+
