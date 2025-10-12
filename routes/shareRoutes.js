@@ -9,7 +9,7 @@ router.get('/:id', async (req, res) => {
   const title = `${music.title} - ${music.artist}`;
   
   // Descripción corta y concisa (WhatsApp muestra máximo ~60-80 caracteres)
-  const description = `Escuchá esto y mucho más"${music.title}" en MusicAll. ${music.rating?.toFixed(1) || '0.0'}⭐ - ${music.likes || 0}❤️`;
+  const description = `Escuchá la música que más te gusta y compartila con MusicApp. ❤️`;
   
   const imageUrl = music.coverUrl || music.avatarArtist || 'https://front-zoonito.vercel.app/assets/zoonito.jpg';
   const frontUrl = `https://front-zoonito.vercel.app/fanpage/${music.artist.replace(/\s+/g, '-').toLowerCase()}`;
@@ -273,6 +273,7 @@ router.get('/:id', async (req, res) => {
 });
 
 module.exports = router;
+
 
 
 
