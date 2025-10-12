@@ -52,7 +52,7 @@ router.get('/:id', async (req, res) => {
    
 
 
-  const html = `<!DOCTYPE html>
+ const html = `<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -67,7 +67,7 @@ router.get('/:id', async (req, res) => {
   <img src="${imageUrl}" alt="${title}" style="max-width:300px;">
   <h1>${music.title}</h1>
   <p>${music.artist}</p>
-  <p><a href="https://front-zoonito.vercel.app/fanpage/"${music.artist}>🔊 Escuchar en MusicAll</a></p>
+  <p><a href="https://front-zoonito.vercel.app/fanpage/${music.artist.toLowerCase().replace(/\s+/g, '-')}">🔊 Escuchar en MusicAll</a></p>
 </body>
 </html>`;
 
@@ -76,6 +76,7 @@ router.get('/:id', async (req, res) => {
 });
 
 module.exports = router;
+
 
 
 
