@@ -14,6 +14,7 @@ const cdRoutes = require("./routes/cdRoutes");
 const patrocinioRoutes = require("./routes/patrocinioRoutes");
 const eventoRoutes = require("./routes/eventoRoutes");
 const avisosRoutes = require("./routes/avisosRoutes");
+const shareRoutes = require('./routes/shareRoutes');
 
 const app = express();
 
@@ -47,6 +48,7 @@ app.use(
 // Rutas
 app.use("/api/eventos", eventoRoutes);
 app.use("/api/auth", authRoutes);
+app.use('/api/share', shareRoutes);
 app.use("/api/music", musicRoutes);
 app.use("/api/subscription", subscriptionRoutes);
 app.use("/api/user", userRoutes);
@@ -205,6 +207,7 @@ app.listen(PORT, () => console.log(`Servidor corriendo en puerto ${PORT}`));
 // });
 
 // module.exports = app;
+
 
 
 
