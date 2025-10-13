@@ -399,8 +399,11 @@ exports.addMusic = async (req, res) => {
 exports.updateMusic = async (req, res) => {
   try {
     console.log("🔄 Actualizando música ID:", req.params.id);
-    console.log("🧾 Content-Type:", req.headers['content-type']);
-    console.log("📦 Body recibido:", req.body);
+    console.log("📦 Datos recibidos:", req.body);
+
+    if (!req.body) {
+      return res.status(400).json({ message: "No se recibieron datos" });
+    }
 
     const { title, artist, album, genre, soloist, avance, audioUrl, coverUrl } = req.body;
     const id = req.params.id;
@@ -414,24 +417,25 @@ exports.updateMusic = async (req, res) => {
       return res.status(404).json({ message: "Música no encontrada" });
     }
 
-    // Actualiza solo los campos presentes
     if (title !== undefined) music.title = title;
     if (artist !== undefined) music.artist = artist;
     if (album !== undefined) music.album = album;
     if (genre !== undefined) music.genre = genre;
-    if (soloist !== undefined) music.soloist = soloist === true || soloist === "true";
-    if (avance !== undefined) music.avance = avance === true || avance === "true";
+    if (soloist !== undefined) music.soloist = soloist === "true" || soloist === true;
+    if (avance !== undefined) music.avance = avance === "true" || avance === true;
     if (audioUrl !== undefined) music.audioUrl = audioUrl;
     if (coverUrl !== undefined) music.coverUrl = coverUrl;
 
     await music.save();
     console.log("✅ Música actualizada exitosamente");
     res.json(music);
+
   } catch (err) {
     console.error("❌ Error actualizando música:", err);
     res.status(500).json({ message: err.message });
   }
 };
+
 
 // ===== DELETE MUSIC =====
 exports.deleteMusic = async (req, res) => {
@@ -580,6 +584,7 @@ exports.getUserRatings = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 }
+
 
 
 
