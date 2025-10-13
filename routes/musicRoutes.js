@@ -4,7 +4,7 @@ const {
   getAllMusic,
   addMusic,
   deleteMusic,
-  uploadMiddleware,
+  // uploadMiddleware,
   updateMusic,
   toggleLike,      // 🆕 Toggle like
   addRating,       // 🆕 Agregar/actualizar rating
@@ -14,8 +14,8 @@ const {
 
 // ===== RUTAS EXISTENTES =====
 router.get('/', getAllMusic);
-router.post('/', uploadMiddleware, addMusic);
-router.put('/:id', uploadMiddleware, updateMusic);
+router.post('/', addMusic);
+router.put('/:id', updateMusic);
 router.delete('/:id', deleteMusic);
 
 // ===== 🆕 NUEVAS RUTAS PARA LIKES Y RATING =====
@@ -23,5 +23,6 @@ router.post('/like', toggleLike);                        // Toggle like (agregar
 router.post('/rate', addRating);                         // Agregar o actualizar rating
 router.get('/user-likes/:userId', getUserLikes);         // Obtener canciones con like del usuario
 router.get('/user-ratings/:userId', getUserRatings);     // Obtener ratings del usuario
+
 
 module.exports = router;
