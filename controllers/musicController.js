@@ -1,3 +1,27 @@
+// const Music = require("../models/Music");
+// const Usuario = require("../models/Usuario");
+// const cloudinary = require("../config/cloudinary");
+// const multer = require("multer");
+// const { CloudinaryStorage } = require("multer-storage-cloudinary");
+// const mongoose = require("mongoose");
+
+// // Configurar storage para Cloudinary
+// const storage = new CloudinaryStorage({
+//   cloudinary: cloudinary,
+//   params: async (req, file) => {
+//     const isAudio = file.fieldname === "audioFile";
+//     return {
+//       folder: isAudio ? "music/audio" : "music/covers",
+//       resource_type: isAudio ? "auto" : "image",
+//       allowed_formats: isAudio
+//         ? ["mp3", "wav", "ogg", "m4a", "mp4", "avi", "mov"]
+//         : ["jpg", "png", "jpeg", "webp", "gif"],
+//     };
+//   },
+// });
+
+
+
 const Music = require("../models/Music");
 const Usuario = require("../models/Usuario");
 const cloudinary = require("../config/cloudinary");
@@ -13,12 +37,21 @@ const storage = new CloudinaryStorage({
     return {
       folder: isAudio ? "music/audio" : "music/covers",
       resource_type: isAudio ? "auto" : "image",
+      format: !isAudio ? "jpg" : undefined, // 🔴 FUERZA JPG PARA PORTADAS
+      quality: !isAudio ? "auto" : undefined, // Optimiza la calidad
       allowed_formats: isAudio
         ? ["mp3", "wav", "ogg", "m4a", "mp4", "avi", "mov"]
         : ["jpg", "png", "jpeg", "webp", "gif"],
     };
   },
 });
+
+const upload = multer({ storage });
+
+exports.uploadMiddleware = upload.fields([
+  { name: "audioFile", maxCount: 1 },
+  { name: "coverFile", maxCount: 1 },
+]);
 
 const upload = multer({ storage });
 
@@ -321,4 +354,5 @@ exports.getUserRatings = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
 
