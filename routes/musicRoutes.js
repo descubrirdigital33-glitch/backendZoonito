@@ -30,6 +30,7 @@
 
 const express = require('express');
 const router = express.Router();
+const multer = require('multer');
 
 const {
   getAllMusic,
@@ -42,15 +43,18 @@ const {
   getUserRatings
 } = require('../controllers/musicController');
 
-// ===== RUTAS PRINCIPALES =====
-router.get('/', getAllMusic);
-router.post('/', addMusic);
-router.put('/:id', updateMusic); // ✅ SIN multer
-router.delete('/:id', deleteMusic);
+// Configurar multer para **NO procesar archivos**, solo parsear campos
+const upload = multer();
 
-// ===== RUTAS PARA LIKES Y RATINGS =====
-router.post('/like', toggleLike);
-router.post('/rate', addRating);
+// Rutas
+router.get('/', getAllMusic);                  // Obtener todas las canciones
+router.post('/', addMusic);                    // Crear música (sin middleware)
+router.put('/:id', express.json(), updateMusic); // Actualizar música JSON puro
+router.delete('/:id', deleteMusic);            // Eliminar música
+
+// Likes y ratings
+router.post('/like', toggleLike);             
+router.post('/rate', addRating);              
 router.get('/user-likes/:userId', getUserLikes);
 router.get('/user-ratings/:userId', getUserRatings);
 
