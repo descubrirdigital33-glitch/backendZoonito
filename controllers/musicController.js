@@ -101,12 +101,20 @@ exports.addMusic = async (req, res) => {
       return res.status(400).json({ error: "userId es requerido" });
     }
 
-    if (!req.files?.audioFile?.[0]) {
-      return res.status(400).json({ error: "Archivo de audio es requerido" });
-    }
+    // if (!req.files?.audioFile?.[0]) {
+    //   return res.status(400).json({ error: "Archivo de audio es requerido" });
+    // }
 
-    const audioFile = req.files.audioFile[0];
-    const coverFile = req.files?.coverFile?.[0];
+    // const audioFile = req.files.audioFile[0];
+    // const coverFile = req.files?.coverFile?.[0];
+
+    if (!req.files?.audioFile?.[0]) {
+  return res.status(400).json({ error: "Archivo de audio es requerido" });
+}
+
+const audioFile = req.files.audioFile[0];
+const coverFile = req.files?.coverFile?.[0];
+
 
     // 🔹 Buscar avatar del usuario
     let avatarArtist;
@@ -354,6 +362,7 @@ exports.getUserRatings = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
 
 
 
