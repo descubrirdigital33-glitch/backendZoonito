@@ -109,12 +109,10 @@ exports.addMusic = async (req, res) => {
     // const audioFile = req.files.audioFile[0];
     // const coverFile = req.files?.coverFile?.[0];
 
-    if (!req.files?.audioFile?.[0]) {
-  return res.status(400).json({ error: "Archivo de audio es requerido" });
+if (!audioUrl) {
+  return res.status(400).json({ error: "audioUrl es requerido" });
 }
 
-const audioFile = req.files.audioFile[0];
-const coverFile = req.files?.coverFile?.[0];
 
 
     // 🔹 Buscar avatar del usuario
@@ -134,10 +132,8 @@ const newMusic = new Music({
   album: album || undefined,
   genre: genre || undefined,
   soloist: soloist === "true" || soloist === true,
-  audioUrl,        // 🔹 viene del frontend
-  audioPublicId: "", // opcional si no querés usar Cloudinary IDs
+  audioUrl,       // 🔹 viene del frontend
   coverUrl: coverUrl || undefined, // 🔹 viene del frontend
-  coverPublicId: "",  // opcional
   idMusico: userId,
   avatarArtist: avatarArtist || null,
 });
@@ -364,6 +360,7 @@ exports.getUserRatings = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
 
 
 
