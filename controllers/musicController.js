@@ -399,11 +399,8 @@ exports.addMusic = async (req, res) => {
 exports.updateMusic = async (req, res) => {
   try {
     console.log("🔄 Actualizando música ID:", req.params.id);
-    console.log("📦 Datos recibidos:", req.body);
-
-    if (!req.body) {
-      return res.status(400).json({ message: "No se recibieron datos" });
-    }
+    console.log("📦 Datos recibidos (body):", req.body);
+    console.log("📦 Archivo recibido:", req.file);
 
     const { title, artist, album, genre, soloist, avance, audioUrl, coverUrl } = req.body;
     const id = req.params.id;
@@ -413,9 +410,7 @@ exports.updateMusic = async (req, res) => {
     }
 
     const music = await Music.findById(id);
-    if (!music) {
-      return res.status(404).json({ message: "Música no encontrada" });
-    }
+    if (!music) return res.status(404).json({ message: "Música no encontrada" });
 
     if (title !== undefined) music.title = title;
     if (artist !== undefined) music.artist = artist;
@@ -423,8 +418,16 @@ exports.updateMusic = async (req, res) => {
     if (genre !== undefined) music.genre = genre;
     if (soloist !== undefined) music.soloist = soloist === "true" || soloist === true;
     if (avance !== undefined) music.avance = avance === "true" || avance === true;
+
+    // Si hay coverFile subido, procesar Cloudinary o guardar URL
+    if (req.file) {
+      // Aquí podrías subir req.file.buffer a Cloudinary y obtener coverUrl
+      music.coverUrl = coverUrl || music.coverUrl;
+    } else if (coverUrl) {
+      music.coverUrl = coverUrl;
+    }
+
     if (audioUrl !== undefined) music.audioUrl = audioUrl;
-    if (coverUrl !== undefined) music.coverUrl = coverUrl;
 
     await music.save();
     console.log("✅ Música actualizada exitosamente");
@@ -584,6 +587,7 @@ exports.getUserRatings = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 }
+
 
 
 
