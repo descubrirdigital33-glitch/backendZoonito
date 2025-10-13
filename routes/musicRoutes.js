@@ -28,9 +28,13 @@
 // module.exports = router;
 
 
-
 const express = require('express');
 const router = express.Router();
+const multer = require('multer');
+
+// Configurar multer para NO procesar archivos (solo campos de texto)
+const upload = multer();
+
 const {
   getAllMusic,
   addMusic,
@@ -45,7 +49,7 @@ const {
 // ===== RUTAS PRINCIPALES =====
 router.get('/', getAllMusic);                          // Obtener todas las canciones
 router.post('/', addMusic);                            // ✅ Crear música (sin middleware)
-router.put('/:id', updateMusic);                       // ✅ Actualizar música (sin middleware)
+router.put('/:id', upload.none(), updateMusic);       // ✅ Parsear multipart pero sin archivos
 router.delete('/:id', deleteMusic);                    // Eliminar música
 
 // ===== RUTAS PARA LIKES Y RATINGS =====
@@ -55,4 +59,3 @@ router.get('/user-likes/:userId', getUserLikes);       // Obtener canciones con 
 router.get('/user-ratings/:userId', getUserRatings);   // Obtener ratings del usuario
 
 module.exports = router;
-
