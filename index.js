@@ -148,7 +148,7 @@ app.use(
 );
 
 // 🔥 PREFLIGHT EXPLÍCITO PARA TODAS LAS RUTAS
-app.options('*', cors());
+app.options('/*', cors());
 
 // Body parsers (DESPUÉS de CORS)
 app.use(express.json({ limit: "50mb" }));
@@ -192,3 +192,4 @@ mongoose
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Servidor corriendo en puerto ${PORT}`));
+
