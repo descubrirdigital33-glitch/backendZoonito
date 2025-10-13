@@ -22,6 +22,29 @@ app.use(express.json());
 app.use(bodyParser.json({ limit: "10mb" }));
 app.use(bodyParser.urlencoded({ extended: true, limit: "10mb" }));
 
+// const allowedOrigins = [
+//   "http://localhost:3000",
+//   "https://front-zoonito.vercel.app"
+// ];
+
+// app.use(
+//   cors({
+//     origin: function (origin, callback) {
+//       // Permite requests sin origin (como desde Postman)
+//       if (!origin || allowedOrigins.includes(origin)) {
+//         callback(null, true);
+//       } else {
+//         console.log("❌ Bloqueado por CORS:", origin);
+//         callback(new Error("No permitido por CORS"));
+//       }
+//     },
+//     credentials: true,
+//     methods: "GET,POST,PUT,DELETE,OPTIONS",
+//     allowedHeaders: "Content-Type,Authorization"
+//   })
+// );
+const cors = require("cors");
+
 const allowedOrigins = [
   "http://localhost:3000",
   "https://front-zoonito.vercel.app"
@@ -30,8 +53,11 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: function (origin, callback) {
-      // Permite requests sin origin (como desde Postman)
-      if (!origin || allowedOrigins.includes(origin)) {
+      if (
+        !origin || // Permite Postman y otros sin origin
+        allowedOrigins.includes(origin) ||
+        /^https:\/\/front-zoonito-[a-z0-9-]+\.vercel\.app$/.test(origin) // 🔥 Permite previews de Vercel
+      ) {
         callback(null, true);
       } else {
         console.log("❌ Bloqueado por CORS:", origin);
@@ -40,7 +66,7 @@ app.use(
     },
     credentials: true,
     methods: "GET,POST,PUT,DELETE,OPTIONS",
-    allowedHeaders: "Content-Type,Authorization"
+    allowedHeaders: "Content-Type,Authorization",
   })
 );
 
@@ -71,3 +97,4 @@ mongoose
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Servidor corriendo en puerto ${PORT}`));
+
