@@ -339,7 +339,7 @@ router.get('/:id', async (req, res) => {
     }
 
     const title = `${music.title} - ${music.artist}`;
-    const description = `Escuchá ahora mismo "${music.title}" de ${music.artist}. ⭐ ${music.rating?.toFixed(1) || '0.0'}/5 - ❤️ ${music.likes || 0} likes`;
+    const description = `Escuchá la música que más te gusta y compartila con MusicApp. ❤️"${music.title}" de ${music.artist}. ⭐ ${music.rating?.toFixed(1) || '0.0'}/5 - ❤️ ${music.likes || 0} likes`;
     
     // Optimizar imagen de cover a JPG
     const originalImageUrl = music.coverUrl || 'https://front-zoonito.vercel.app/assets/zoonito.jpg';
@@ -601,6 +601,7 @@ router.get('/:id', async (req, res) => {
 });
 
 module.exports = router;
+
 
 
 
