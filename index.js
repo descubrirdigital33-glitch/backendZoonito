@@ -20,6 +20,9 @@ const shareRoutes = require('./routes/shareRoutes');
 
 
 app.use(express.json());
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
+
 app.use(bodyParser.json({ limit: "10mb" }));
 app.use(bodyParser.urlencoded({ extended: true, limit: "10mb" }));
 
@@ -151,4 +154,5 @@ app.listen(PORT, () => console.log(`Servidor corriendo en puerto ${PORT}`));
 
 // const PORT = process.env.PORT || 5000;
 // app.listen(PORT, () => console.log(`Servidor corriendo en puerto ${PORT}`));
+
 
