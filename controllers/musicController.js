@@ -92,7 +92,8 @@ exports.getAllMusic = async (req, res) => {
 exports.addMusic = async (req, res) => {
   try {
     
-    const { title, artist, album, genre, soloist,avance } = req.body;
+   const { title, artist, album, genre, soloist, avance, audioUrl, coverUrl } = req.body;
+
     
     const userId = req.body.userId || req.user?._id || req.user?.id;
     console.log("👤 userId extraído:", userId);
@@ -126,20 +127,21 @@ const coverFile = req.files?.coverFile?.[0];
       console.warn("⚠️ Usuario no encontrado, no se pudo asignar avatar");
     }
 
-    const newMusic = new Music({
-      title,
-      artist,
-      avance,
-      album: album || undefined,
-      genre: genre || undefined,
-      soloist: soloist === "true" || soloist === true,
-      audioUrl: audioFile.path,
-      audioPublicId: audioFile.filename,
-      coverUrl: coverFile?.path || undefined,
-      coverPublicId: coverFile?.filename || undefined,
-      idMusico: userId,
-      avatarArtist: avatarArtist || null,
-    });
+const newMusic = new Music({
+  title,
+  artist,
+  avance,
+  album: album || undefined,
+  genre: genre || undefined,
+  soloist: soloist === "true" || soloist === true,
+  audioUrl,        // 🔹 viene del frontend
+  audioPublicId: "", // opcional si no querés usar Cloudinary IDs
+  coverUrl: coverUrl || undefined, // 🔹 viene del frontend
+  coverPublicId: "",  // opcional
+  idMusico: userId,
+  avatarArtist: avatarArtist || null,
+});
+
 
     await newMusic.save();
     
@@ -362,6 +364,7 @@ exports.getUserRatings = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
 
 
 
