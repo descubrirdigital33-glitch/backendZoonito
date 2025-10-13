@@ -43,17 +43,18 @@ const {
 } = require('../controllers/musicController');
 
 // ===== RUTAS PRINCIPALES =====
-router.get('/', getAllMusic);                          
-router.post('/', addMusic);                            
-router.put('/:id', express.json(), updateMusic);  // ✅ sin multer, acepta JSON
-router.delete('/:id', deleteMusic);                    
+router.get('/', getAllMusic);
+router.post('/', addMusic);
+router.put('/:id', updateMusic); // ✅ SIN multer
+router.delete('/:id', deleteMusic);
 
 // ===== RUTAS PARA LIKES Y RATINGS =====
-router.post('/like', toggleLike);                      
-router.post('/rate', addRating);                       
-router.get('/user-likes/:userId', getUserLikes);       
-router.get('/user-ratings/:userId', getUserRatings);   
+router.post('/like', toggleLike);
+router.post('/rate', addRating);
+router.get('/user-likes/:userId', getUserLikes);
+router.get('/user-ratings/:userId', getUserRatings);
 
 module.exports = router;
+
 
 
