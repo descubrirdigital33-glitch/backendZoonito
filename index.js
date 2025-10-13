@@ -4,8 +4,8 @@ const app = express();
 const mongoose = require("mongoose");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const path = require("path");
 
+// Rutas
 const authRoutes = require("./routes/authRoutes");
 const musicRoutes = require("./routes/musicRoutes");
 const subscriptionRoutes = require("./routes/subscriptionRoutes");
@@ -17,24 +17,19 @@ const eventoRoutes = require("./routes/eventoRoutes");
 const avisosRoutes = require("./routes/avisosRoutes");
 const shareRoutes = require('./routes/shareRoutes');
 
-
-
+// Middleware
 app.use(express.json());
-app.use(express.json({ limit: "10mb" }));
-app.use(express.urlencoded({ extended: true, limit: "10mb" }));
-
 app.use(bodyParser.json({ limit: "10mb" }));
 app.use(bodyParser.urlencoded({ extended: true, limit: "10mb" }));
 
 const allowedOrigins = [
-  "http://localhost:3000",
-  "https://front-zoonito.vercel.app"
+  "http://localhost:3000",           // desarrollo
+  "https://front-zoonito.vercel.app" // producción
 ];
 
 app.use(
   cors({
     origin: function (origin, callback) {
-      // Permite requests sin origin (como desde Postman)
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
@@ -48,7 +43,6 @@ app.use(
   })
 );
 
-
 // Rutas
 app.use("/api/eventos", eventoRoutes);
 app.use("/api/auth", authRoutes);
@@ -61,9 +55,11 @@ app.use("/api/cds", cdRoutes);
 app.use("/api/eventos/patrocinioRoutes", patrocinioRoutes);
 app.use("/api/avisoadmin", avisosRoutes);
 
+// Test
 app.get("/api/test", (req, res) => {
   res.send("¡Vamos bien!");
 });
+
 // Conexión a MongoDB
 mongoose
   .connect(process.env.MONGO_URI, {
@@ -73,6 +69,7 @@ mongoose
   .then(() => console.log("MongoDB conectado"))
   .catch((err) => console.error(err));
 
+// Servidor
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Servidor corriendo en puerto ${PORT}`));
 
@@ -154,5 +151,6 @@ app.listen(PORT, () => console.log(`Servidor corriendo en puerto ${PORT}`));
 
 // const PORT = process.env.PORT || 5000;
 // app.listen(PORT, () => console.log(`Servidor corriendo en puerto ${PORT}`));
+
 
 
