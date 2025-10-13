@@ -47,6 +47,10 @@ const {
 const upload = multer();
 
 // Rutas
+
+
+router.put("/:id", upload.single("coverFile"), updateMusic);
+
 router.get('/', getAllMusic);                  // Obtener todas las canciones
 router.post('/', addMusic);                    // Crear música (sin middleware)
 router.put('/:id', express.json(), updateMusic); // Actualizar música JSON puro
@@ -59,6 +63,7 @@ router.get('/user-likes/:userId', getUserLikes);
 router.get('/user-ratings/:userId', getUserRatings);
 
 module.exports = router;
+
 
 
 
