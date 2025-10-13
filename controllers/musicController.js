@@ -398,8 +398,9 @@ exports.addMusic = async (req, res) => {
 // ===== UPDATE MUSIC =====
 exports.updateMusic = async (req, res) => {
   try {
-    console.log("🔄 Actualizando música ID:", req.params.id);
-    console.log("📦 Datos recibidos:", req.body);
+   console.log("🧾 Content-Type:", req.headers['content-type']);
+console.log("📦 Body recibido:", req.body);
+
     
     const { title, artist, album, genre, soloist, avance, audioUrl, coverUrl } = req.body;
     const id = req.params.id;
@@ -580,6 +581,7 @@ exports.getUserRatings = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 }
+
 
 
 
