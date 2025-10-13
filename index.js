@@ -1,5 +1,6 @@
 require("dotenv").config();
 const express = require("express");
+const app = express();
 const mongoose = require("mongoose");
 const cors = require("cors");
 const bodyParser = require("body-parser");
@@ -16,7 +17,7 @@ const eventoRoutes = require("./routes/eventoRoutes");
 const avisosRoutes = require("./routes/avisosRoutes");
 const shareRoutes = require('./routes/shareRoutes');
 
-const app = express();
+
 
 app.use(express.json());
 app.use(bodyParser.json({ limit: "10mb" }));
@@ -96,6 +97,7 @@ mongoose
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Servidor corriendo en puerto ${PORT}`));
+
 
 
 
