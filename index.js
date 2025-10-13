@@ -1,84 +1,3 @@
-// require("dotenv").config();
-// const express = require("express");
-// const app = express();
-// const mongoose = require("mongoose");
-// const cors = require("cors");
-// const bodyParser = require("body-parser");
-// const path = require("path");
-
-// const authRoutes = require("./routes/authRoutes");
-// const musicRoutes = require("./routes/musicRoutes");
-// const subscriptionRoutes = require("./routes/subscriptionRoutes");
-// const userRoutes = require("./routes/userRoutes");
-// const listaRoutes = require("./routes/listaRoutes");
-// const cdRoutes = require("./routes/cdRoutes");
-// const patrocinioRoutes = require("./routes/patrocinioRoutes");
-// const eventoRoutes = require("./routes/eventoRoutes");
-// const avisosRoutes = require("./routes/avisosRoutes");
-// const shareRoutes = require('./routes/shareRoutes');
-
-
-
-// app.use(express.json());
-// app.use(bodyParser.json({ limit: "10mb" }));
-// app.use(bodyParser.urlencoded({ extended: true, limit: "10mb" }));
-
-// const allowedOrigins = [
-//   "http://localhost:3000",
-//   "https://front-zoonito.vercel.app"
-// ];
-
-// app.use(
-//   cors({
-//     origin: function (origin, callback) {
-//       // Permite requests sin origin (como desde Postman)
-//       if (!origin || allowedOrigins.includes(origin)) {
-//         callback(null, true);
-//       } else {
-//         console.log("❌ Bloqueado por CORS:", origin);
-//         callback(new Error("No permitido por CORS"));
-//       }
-//     },
-//     credentials: true,
-//     methods: "GET,POST,PUT,DELETE,OPTIONS",
-//     allowedHeaders: "Content-Type,Authorization"
-//   })
-// );
-
-
-// // Rutas
-// app.use("/api/eventos", eventoRoutes);
-// app.use("/api/auth", authRoutes);
-// app.use('/api/share', shareRoutes);
-// app.use("/api/music", musicRoutes);
-// app.use("/api/subscription", subscriptionRoutes);
-// app.use("/api/user", userRoutes);
-// app.use("/api/listas", listaRoutes);
-// app.use("/api/cds", cdRoutes);
-// app.use("/api/eventos/patrocinioRoutes", patrocinioRoutes);
-// app.use("/api/avisoadmin", avisosRoutes);
-
-// app.get("/api/test", (req, res) => {
-//   res.send("¡Vamos bien!");
-// });
-// // Conexión a MongoDB
-// mongoose
-//   .connect(process.env.MONGO_URI, {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-//   })
-//   .then(() => console.log("MongoDB conectado"))
-//   .catch((err) => console.error(err));
-
-// const PORT = process.env.PORT || 5000;
-// app.listen(PORT, () => console.log(`Servidor corriendo en puerto ${PORT}`));
-
-
-
-
-
-
-
 require("dotenv").config();
 const express = require("express");
 const app = express();
@@ -86,6 +5,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const path = require("path");
+
 const authRoutes = require("./routes/authRoutes");
 const musicRoutes = require("./routes/musicRoutes");
 const subscriptionRoutes = require("./routes/subscriptionRoutes");
@@ -97,40 +17,34 @@ const eventoRoutes = require("./routes/eventoRoutes");
 const avisosRoutes = require("./routes/avisosRoutes");
 const shareRoutes = require('./routes/shareRoutes');
 
+
+
 app.use(express.json());
 app.use(bodyParser.json({ limit: "10mb" }));
 app.use(bodyParser.urlencoded({ extended: true, limit: "10mb" }));
 
 const allowedOrigins = [
   "http://localhost:3000",
-  "http://localhost:3001",
   "https://front-zoonito.vercel.app"
 ];
 
 app.use(
   cors({
     origin: function (origin, callback) {
-      // Permite requests sin origin (como desde Postman, apps móviles, etc.)
-      if (!origin) return callback(null, true);
-      
-      // Verifica si está en la lista de orígenes permitidos
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true);
+      // Permite requests sin origin (como desde Postman)
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        console.log("❌ Bloqueado por CORS:", origin);
+        callback(new Error("No permitido por CORS"));
       }
-      
-      // Permite cualquier subdominio de vercel.app
-      if (origin.endsWith('.vercel.app')) {
-        return callback(null, true);
-      }
-      
-      console.log("❌ Bloqueado por CORS:", origin);
-      callback(new Error("No permitido por CORS"));
     },
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"]
+    methods: "GET,POST,PUT,DELETE,OPTIONS",
+    allowedHeaders: "Content-Type,Authorization"
   })
 );
+
 
 // Rutas
 app.use("/api/eventos", eventoRoutes);
@@ -147,7 +61,6 @@ app.use("/api/avisoadmin", avisosRoutes);
 app.get("/api/test", (req, res) => {
   res.send("¡Vamos bien!");
 });
-
 // Conexión a MongoDB
 mongoose
   .connect(process.env.MONGO_URI, {
@@ -159,3 +72,91 @@ mongoose
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Servidor corriendo en puerto ${PORT}`));
+
+
+
+
+
+
+
+// require("dotenv").config();
+// const express = require("express");
+// const app = express();
+// const mongoose = require("mongoose");
+// const cors = require("cors");
+// const bodyParser = require("body-parser");
+// const path = require("path");
+// const authRoutes = require("./routes/authRoutes");
+// const musicRoutes = require("./routes/musicRoutes");
+// const subscriptionRoutes = require("./routes/subscriptionRoutes");
+// const userRoutes = require("./routes/userRoutes");
+// const listaRoutes = require("./routes/listaRoutes");
+// const cdRoutes = require("./routes/cdRoutes");
+// const patrocinioRoutes = require("./routes/patrocinioRoutes");
+// const eventoRoutes = require("./routes/eventoRoutes");
+// const avisosRoutes = require("./routes/avisosRoutes");
+// const shareRoutes = require('./routes/shareRoutes');
+
+// app.use(express.json());
+// app.use(bodyParser.json({ limit: "10mb" }));
+// app.use(bodyParser.urlencoded({ extended: true, limit: "10mb" }));
+
+// const allowedOrigins = [
+//   "http://localhost:3000",
+//   "http://localhost:3001",
+//   "https://front-zoonito.vercel.app"
+// ];
+
+// app.use(
+//   cors({
+//     origin: function (origin, callback) {
+//       // Permite requests sin origin (como desde Postman, apps móviles, etc.)
+//       if (!origin) return callback(null, true);
+      
+//       // Verifica si está en la lista de orígenes permitidos
+//       if (allowedOrigins.includes(origin)) {
+//         return callback(null, true);
+//       }
+      
+//       // Permite cualquier subdominio de vercel.app
+//       if (origin.endsWith('.vercel.app')) {
+//         return callback(null, true);
+//       }
+      
+//       console.log("❌ Bloqueado por CORS:", origin);
+//       callback(new Error("No permitido por CORS"));
+//     },
+//     credentials: true,
+//     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+//     allowedHeaders: ["Content-Type", "Authorization"]
+//   })
+// );
+
+// // Rutas
+// app.use("/api/eventos", eventoRoutes);
+// app.use("/api/auth", authRoutes);
+// app.use('/api/share', shareRoutes);
+// app.use("/api/music", musicRoutes);
+// app.use("/api/subscription", subscriptionRoutes);
+// app.use("/api/user", userRoutes);
+// app.use("/api/listas", listaRoutes);
+// app.use("/api/cds", cdRoutes);
+// app.use("/api/eventos/patrocinioRoutes", patrocinioRoutes);
+// app.use("/api/avisoadmin", avisosRoutes);
+
+// app.get("/api/test", (req, res) => {
+//   res.send("¡Vamos bien!");
+// });
+
+// // Conexión a MongoDB
+// mongoose
+//   .connect(process.env.MONGO_URI, {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//   })
+//   .then(() => console.log("MongoDB conectado"))
+//   .catch((err) => console.error(err));
+
+// const PORT = process.env.PORT || 5000;
+// app.listen(PORT, () => console.log(`Servidor corriendo en puerto ${PORT}`));
+
