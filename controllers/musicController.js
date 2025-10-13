@@ -27,39 +27,6 @@ exports.uploadMiddleware = upload.fields([
   { name: "coverFile", maxCount: 1 },
 ]);
 
-
-// const Music = require("../models/Music");
-// const Usuario = require("../models/Usuario");
-// const cloudinary = require("../config/cloudinary");
-// const multer = require("multer");
-// const { CloudinaryStorage } = require("multer-storage-cloudinary");
-// const mongoose = require("mongoose");
-
-// // Configurar storage para Cloudinary
-// const storage = new CloudinaryStorage({
-//   cloudinary: cloudinary,
-//   params: async (req, file) => {
-//     const isAudio = file.fieldname === "audioFile";
-//     return {
-//       folder: isAudio ? "music/audio" : "music/covers",
-//       resource_type: isAudio ? "auto" : "image",
-//       format: !isAudio ? "jpg" : undefined, // 🔴 FUERZA JPG PARA PORTADAS
-//       quality: !isAudio ? "auto" : undefined, // Optimiza la calidad
-//       allowed_formats: isAudio
-//         ? ["mp3", "wav", "ogg", "m4a", "mp4", "avi", "mov"]
-//         : ["jpg", "png", "jpeg", "webp", "gif"],
-//     };
-//   },
-// });
-
-
-// const upload = multer({ storage });
-
-// exports.uploadMiddleware = upload.fields([
-//   { name: "audioFile", maxCount: 1 },
-//   { name: "coverFile", maxCount: 1 },
-// ]);
-
 exports.getAllMusic = async (req, res) => {
   try {
     const userId = req.query.userId;
@@ -102,12 +69,6 @@ exports.addMusic = async (req, res) => {
       return res.status(400).json({ error: "userId es requerido" });
     }
 
-    // if (!req.files?.audioFile?.[0]) {
-    //   return res.status(400).json({ error: "Archivo de audio es requerido" });
-    // }
-
-    // const audioFile = req.files.audioFile[0];
-    // const coverFile = req.files?.coverFile?.[0];
 
 if (!audioUrl) {
   return res.status(400).json({ error: "audioUrl es requerido" });
@@ -179,13 +140,11 @@ exports.deleteMusic = async (req, res) => {
 
 exports.updateMusic = async (req, res) => {
   try {
-    const { title, artist, album, genre, soloist } = req.body;
+    const { title, artist, album, genre, soloist, audioUrl, coverUrl } = req.body;
     const id = req.params.id;
 
     const music = await Music.findById(id);
-    if (!music) {
-      return res.status(404).json({ message: "Música no encontrada" });
-    }
+    if (!music) return res.status(404).json({ message: "Música no encontrada" });
 
     // Actualizar campos de texto
     if (title) music.title = title;
@@ -194,34 +153,9 @@ exports.updateMusic = async (req, res) => {
     if (genre) music.genre = genre;
     if (soloist !== undefined) music.soloist = soloist === "true";
 
-    // Actualizar archivo de audio si se envió uno nuevo
-    if (req.files && req.files.audioFile) {
-      // Eliminar audio anterior de Cloudinary
-      if (music.audioPublicId) {
-        await cloudinary.uploader.destroy(music.audioPublicId, {
-          resource_type: "video",
-        });
-      }
-      
-      const audioFile = req.files.audioFile[0];
-      music.audioUrl = audioFile.path;
-      music.audioPublicId = audioFile.filename;
-      console.log("🎵 Nuevo audio subido:", audioFile.path);
-    }
-
-    // 🔹 Actualizar portada si se envió una nueva
-    if (req.files && req.files.coverFile) {
-      // Eliminar portada anterior de Cloudinary
-      if (music.coverPublicId) {
-        await cloudinary.uploader.destroy(music.coverPublicId);
-        console.log("🗑️ Portada anterior eliminada de Cloudinary");
-      }
-      
-      const coverFile = req.files.coverFile[0];
-      music.coverUrl = coverFile.path;
-      music.coverPublicId = coverFile.filename;
-      console.log("🖼️ Nueva portada subida:", coverFile.path);
-    }
+    // Actualizar URLs si vienen nuevas
+    if (audioUrl) music.audioUrl = audioUrl;
+    if (coverUrl) music.coverUrl = coverUrl;
 
     await music.save();
     console.log("✅ Música actualizada exitosamente");
@@ -360,6 +294,7 @@ exports.getUserRatings = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
 
 
 
