@@ -20,6 +20,12 @@
 //   },
 // });
 
+// const upload = multer({ storage });
+
+// exports.uploadMiddleware = upload.fields([
+//   { name: "audioFile", maxCount: 1 },
+//   { name: "coverFile", maxCount: 1 },
+// ]);
 
 
 const Music = require("../models/Music");
@@ -46,12 +52,6 @@ const storage = new CloudinaryStorage({
   },
 });
 
-const upload = multer({ storage });
-
-exports.uploadMiddleware = upload.fields([
-  { name: "audioFile", maxCount: 1 },
-  { name: "coverFile", maxCount: 1 },
-]);
 
 const upload = multer({ storage });
 
