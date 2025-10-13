@@ -153,7 +153,7 @@ exports.updateMusic = async (req, res) => {
     if (genre) music.genre = genre;
     if (soloist !== undefined) music.soloist = soloist === "true";
 
-    // Actualizar URLs si vienen nuevas
+    // Actualizar URLs enviadas desde el frontend
     if (audioUrl) music.audioUrl = audioUrl;
     if (coverUrl) music.coverUrl = coverUrl;
 
@@ -165,6 +165,7 @@ exports.updateMusic = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
 
 // 🆕 TOGGLE LIKE - Agregar o quitar like
 exports.toggleLike = async (req, res) => {
@@ -294,6 +295,7 @@ exports.getUserRatings = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
 
 
 
