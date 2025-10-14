@@ -48,29 +48,29 @@ const eventoRoutes = require("./routes/eventoRoutes");
 const avisosRoutes = require("./routes/avisosRoutes");
 const shareRoutes = require('./routes/shareRoutes');
 
-// app.use("/api/eventos", eventoRoutes);
-// app.use("/api/auth", authRoutes);
-// app.use('/api/share', shareRoutes);
-// app.use("/api/music", musicRoutes);
-// app.use("/api/subscription", subscriptionRoutes);
-// app.use("/api/user", userRoutes);
-// app.use("/api/listas", listaRoutes);
-// app.use("/api/cds", cdRoutes);
-// app.use("/api/eventos/patrocinioRoutes", patrocinioRoutes);
-// app.use("/api/avisoadmin", avisosRoutes);
-
-
-
+app.use("/api/eventos", eventoRoutes);
+app.use("/api/eventos/patrocinioRoutes", patrocinioRoutes);
+app.use("/api/auth", authRoutes);
+app.use('/api/share', shareRoutes);
 app.use("/api/music", musicRoutes);
 app.use("/api/subscription", subscriptionRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/listas", listaRoutes);
 app.use("/api/cds", cdRoutes);
-app.use("/api/auth", authRoutes);
-app.use("/api/eventos", eventoRoutes);
-app.use("/api/eventos/patrocinioRoutes", patrocinioRoutes);
-app.use('/api/share', shareRoutes);
 app.use("/api/avisoadmin", avisosRoutes);
+
+
+
+// app.use("/api/music", musicRoutes);
+// app.use("/api/subscription", subscriptionRoutes);
+// app.use("/api/user", userRoutes);
+// app.use("/api/listas", listaRoutes);
+// app.use("/api/cds", cdRoutes);
+// app.use("/api/auth", authRoutes);
+// app.use("/api/eventos", eventoRoutes);
+// app.use("/api/eventos/patrocinioRoutes", patrocinioRoutes);
+// app.use('/api/share', shareRoutes);
+// app.use("/api/avisoadmin", avisosRoutes);
 app.get("/api/test", (req, res) => {
   res.send("¡Vamos bien!");
 });
@@ -86,6 +86,7 @@ mongoose
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Servidor corriendo en puerto ${PORT}`));
+
 
 
 
