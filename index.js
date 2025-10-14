@@ -9,7 +9,6 @@ const allowedOrigins = [
   "https://front-zoonito.vercel.app"
 ];
 
-// ⚠️ IMPORTANTE: El orden de los middlewares es crucial
 app.use(cors({
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
@@ -86,6 +85,7 @@ mongoose
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Servidor corriendo en puerto ${PORT}`));
+
 
 
 
