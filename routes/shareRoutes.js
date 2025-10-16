@@ -40,10 +40,6 @@ function optimizeCloudinaryImage(imageUrl) {
   }
 }
 
-/**
- * Genera un timestamp para cache busting
- * @returns {string}
- */
 function getCacheBuster() {
   return `?v=${Date.now()}`;
 }
@@ -319,6 +315,7 @@ router.get('/:id', async (req, res) => {
 });
 
 module.exports = router;
+
 
 
 
