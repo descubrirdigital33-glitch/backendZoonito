@@ -1,4 +1,3 @@
-
 require("dotenv").config();
 const express = require("express");
 const app = express();
@@ -104,6 +103,7 @@ const upload = multer({
 
 // Ruta para subir audio a GridFS
 app.listen(PORT, () => console.log(`Servidor corriendo en puerto ${PORT}`));
+
 
 
 
