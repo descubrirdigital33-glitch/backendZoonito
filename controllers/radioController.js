@@ -1,6 +1,6 @@
 // controllers/radioController.js
 const Radio = require("../models/Radio");
-const Track = require("../models/Track");
+const Track = require("../models/track");
 const ChatMessage = require("../models/chatMessage");
 const User = require("../models/Usuario");
 const { GridFSBucket } = require("mongodb");
@@ -935,3 +935,4 @@ exports.startIcecastStream = async (req, res) => {
   }
 
 };
+
