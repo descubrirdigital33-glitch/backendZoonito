@@ -215,8 +215,6 @@
 // module.exports = app;
 
 
-
-
 require("dotenv").config();
 const express = require("express");
 const app = express();
@@ -224,6 +222,8 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const path = require("path");
+const multer = require('multer');
+const { GridFSBucket } = require('mongodb');
 
 // ============================================================================
 // IMPORTAR RUTAS
@@ -241,9 +241,7 @@ const shareRoutes = require('./routes/shareRoutes');
 const cancionesRoutes = require('./routes/cancionesRoutes');
 const lyricsRoutes = require('./routes/lyricsRoutes');
 const radioRoutes = require("./routes/radioRoutes");
-// const iceRoutes = require("./routes/iceRoutes"); // ⭐ NUEVA RUTA PARA ICECAST
 const onlineRoutes = require("./routes/onlineRoutes");
-
 
 // ============================================================================
 // MIDDLEWARES BÁSICOS
@@ -277,6 +275,14 @@ app.use(
 );
 
 // ============================================================================
+// MIDDLEWARE DE LOGGING
+// ============================================================================
+app.use((req, res, next) => {
+  console.log(`📨 ${req.method} ${req.path}`);
+  next();
+});
+
+// ============================================================================
 // CONEXIÓN A MONGODB
 // ============================================================================
 mongoose
@@ -287,7 +293,6 @@ mongoose
   .then(() => {
     console.log("✅ MongoDB conectado exitosamente");
     console.log("✅ GridFS se inicializará automáticamente en radioController");
-    console.log("✅ GridFS para Icecast streaming inicializado");
   })
   .catch((err) => {
     console.error("❌ Error conectando a MongoDB:", err);
@@ -295,11 +300,19 @@ mongoose
   });
 
 // ============================================================================
-// MIDDLEWARE DE LOGGING (OPCIONAL)
+// CONFIGURACIÓN DE MULTER PARA ARCHIVOS
 // ============================================================================
-app.use((req, res, next) => {
-  console.log(`📨 ${req.method} ${req.path}`);
-  next();
+const storage = multer.memoryStorage();
+const upload = multer({ 
+  storage,
+  limits: { fileSize: 50 * 1024 * 1024 }, // 50MB máximo
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype.startsWith('audio/')) {
+      cb(null, true);
+    } else {
+      cb(new Error('Solo se permiten archivos de audio'));
+    }
+  }
 });
 
 // ============================================================================
@@ -318,18 +331,21 @@ app.use("/api/avisoadmin", avisosRoutes);
 app.use('/api/canciones', cancionesRoutes);
 app.use('/api/lyrics', lyricsRoutes);
 app.use("/api/radio", radioRoutes);
-// app.use("/api/ice", iceRoutes);
-
 app.use("/api/ice", onlineRoutes);
 
-
 // ============================================================================
-// RUTA DE PRUEBA
+// RUTA DE PRUEBA (SOLO UNA VEZ)
 // ============================================================================
 app.get("/api/test", (req, res) => {
   res.json({ 
     message: "¡Servidor funcionando correctamente!",
     mongodb: mongoose.connection.readyState === 1 ? "✅ Conectado" : "❌ Desconectado",
+    icecast: {
+      host: process.env.ICECAST_HOST || 'localhost',
+      port: process.env.ICECAST_PORT || 8000,
+      url: process.env.ICECAST_URL || 'http://localhost:8000',
+    },
+    timestamp: new Date().toISOString()
   });
 });
 
@@ -388,6 +404,58 @@ app.use((err, req, res, next) => {
 // ============================================================================
 const PORT = process.env.PORT || 5000;
 
+app.listen(PORT, () => {
+  console.log("═══════════════════════════════════════════════");
+  console.log(`🚀 Servidor corriendo en puerto ${PORT}`);
+  console.log(`📡 Entorno: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`🌐 URL local: http://localhost:${PORT}`);
+  console.log(`📁 API Base: http://localhost:${PORT}/api`);
+  console.log(`🎙️ Icecast URL: ${process.env.ICECAST_URL || 'http://localhost:8000'}`);
+  console.log("═══════════════════════════════════════════════");
+});
+
+// ============================================================================
+// MANEJO DE CIERRE GRACEFUL
+// ============================================================================
+process.on('SIGTERM', async () => {
+  console.log('👋 SIGTERM recibido. Cerrando servidor...');
+  
+  try {
+    await mongoose.connection.close();
+    console.log('✅ Conexión a MongoDB cerrada');
+    process.exit(0);
+  } catch (err) {
+    console.error('❌ Error al cerrar conexión:', err);
+    process.exit(1);
+  }
+});
+
+process.on('SIGINT', async () => {
+  console.log('👋 SIGINT recibido. Cerrando servidor...');
+  
+  try {
+    await mongoose.connection.close();
+    console.log('✅ Conexión a MongoDB cerrada');
+    process.exit(0);
+  } catch (err) {
+    console.error('❌ Error al cerrar conexión:', err);
+    process.exit(1);
+  }
+});
+
+// ============================================================================
+// MANEJO DE ERRORES NO CAPTURADOS
+// ============================================================================
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('❌ Unhandled Rejection at:', promise, 'reason:', reason);
+});
+
+process.on('uncaughtException', (error) => {
+  console.error('❌ Uncaught Exception:', error);
+  process.exit(1);
+});
+
+module.exports = app;
 
 
 // ============================================================================
@@ -780,6 +848,7 @@ module.exports = app;
 // });
 
 // module.exports = app;
+
 
 
 
