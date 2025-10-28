@@ -326,8 +326,6 @@
 // module.exports = app;
 
 
-
-
 require("dotenv").config();
 const express = require("express");
 const app = express();
@@ -557,6 +555,7 @@ process.on('uncaughtException', (error) => {
 });
 
 module.exports = app;
+
 
 
 
