@@ -1,6 +1,6 @@
 // controllers/radioController.js
 const Radio = require("../models/Radio");
-const Track = require("../models/track");
+const Track = require("../models/Track");
 const ChatMessage = require("../models/chatMessage");
 const User = require("../models/Usuario");
 const { GridFSBucket } = require("mongodb");
@@ -933,4 +933,5 @@ exports.startIcecastStream = async (req, res) => {
     console.error("Error al iniciar transmisión:", error);
     res.status(500).json({ message: "Error al iniciar transmisión" });
   }
+
 };
