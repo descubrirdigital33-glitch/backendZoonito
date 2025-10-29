@@ -109,8 +109,7 @@ app.get("/api/test", (req, res) => {
 
 
 
-// Al final del archivo, después de las rutas
-const server = app.listen(PORT, () => console.log(`Servidor corriendo en puerto ${PORT}`));
+
 
 // Configurar Socket.IO
 const { Server } = require('socket.io');
@@ -151,6 +150,7 @@ io.on('connection', (socket) => {
   });
 });
 // Iniciar servidor
-app.listen(PORT, () => console.log(`Servidor corriendo en puerto ${PORT}`));
+const server = app.listen(PORT, () => console.log(`Servidor corriendo en puerto ${PORT}`));
+
 
 
