@@ -216,11 +216,6 @@ app.use("/api/radio", radioRoutes);
 app.use("/api/ice", onlineRoutes);
 
 
-// Al final del archivo, después de las rutas
-const server = app.listen(PORT, () => console.log(`Servidor corriendo en puerto aca en la parte de consola vsc ${PORT}`));
-
-
-
 // Conexión a MongoDB
 mongoose
   .connect(process.env.MONGO_URI, {
@@ -263,6 +258,10 @@ app.get("/api/test", (req, res) => {
    });
 
 
+// Al final del archivo, después de las rutas
+const server = app.listen(PORT, () => console.log(`Servidor corriendo en puerto aca en la parte de consola vsc ${PORT}`));
+
+
 // Configurar Socket.IO
 const { Server } = require('socket.io');
 const io = new Server(server, {
@@ -301,6 +300,7 @@ io.on('connection', (socket) => {
     console.log('❌ Cliente desconectado:', socket.id);
   });
 });
+
 
 
 
