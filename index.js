@@ -251,7 +251,7 @@ const upload = multer({
 
 // ---------------------- RUTA DE PRUEBA ----------------------
 app.get("/api/test", (req, res) => {
-  res.send("¡Vamos bien!");
+  res.send("¡Vamos bien espero que sigamos aca!");
 });
 
 // ---------------------- SOCKET.IO ----------------------
@@ -309,6 +309,7 @@ if (!process.env.VERCEL) {
 
 // Exportamos app para Vercel
 module.exports = app;
+
 
 
 
