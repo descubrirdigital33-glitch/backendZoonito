@@ -146,7 +146,6 @@
 // });
 
 
-
 require("dotenv").config();
 const express = require("express");
 const app = express();
@@ -292,3 +291,4 @@ io.on('connection', (socket) => {
     console.log('❌ Cliente desconectado:', socket.id);
   });
 });
+
