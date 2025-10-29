@@ -169,7 +169,7 @@ const authRoutes = require("./routes/authRoutes");
 const musicRoutes = require("./routes/musicRoutes");
 const subscriptionRoutes = require("./routes/subscriptionRoutes");
 const userRoutes = require("./routes/userRoutes");
-const listaRoutes = require("./routes/listasRoutes");
+const listaRoutes = require("./routes/listaRoutes");
 const cdRoutes = require("./routes/cdRoutes");
 const patrocinioRoutes = require("./routes/patrocinioRoutes");
 const eventoRoutes = require("./routes/eventoRoutes");
@@ -309,5 +309,6 @@ if (!process.env.VERCEL) {
 
 // Exportamos app para Vercel
 module.exports = app;
+
 
 
