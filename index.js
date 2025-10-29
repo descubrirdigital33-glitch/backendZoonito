@@ -301,7 +301,7 @@ io.on("connection", (socket) => {
 // ---------------------- INICIAR SERVIDOR ----------------------
 // Solo si no estamos en Vercel (serverless)
 if (!process.env.VERCEL) {
-  const PORT = process.env.PORT || 5000;
+  const PORT = process.env.PORT ;
   server.listen(PORT, () =>
     console.log(`Servidor corriendo en puerto ${PORT}`)
   );
@@ -309,6 +309,7 @@ if (!process.env.VERCEL) {
 
 // Exportamos app para Vercel
 module.exports = app;
+
 
 
 
