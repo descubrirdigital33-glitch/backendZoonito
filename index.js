@@ -214,11 +214,11 @@ app.use('/api/lyrics', lyricsRoutes);
 // ⭐ NUEVAS RUTAS DE RADIO
 app.use("/api/radio", radioRoutes);
 app.use("/api/ice", onlineRoutes);
-
+// process.env.MONGO_URI
 
 // Conexión a MongoDB
 mongoose
-  .connect(process.env.MONGO_URI, {
+  .connect('mongodb+srv://descubrir:descubrir@cluster0.kd3xgec.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
@@ -300,6 +300,7 @@ io.on('connection', (socket) => {
     console.log('❌ Cliente desconectado:', socket.id);
   });
 });
+
 
 
 
