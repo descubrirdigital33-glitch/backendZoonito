@@ -224,7 +224,7 @@ mongoose
   .then(() => console.log("MongoDB conectado"))
   .catch((err) => console.error(err));
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT;
 
 // Configuración de Multer para archivos en memoria
 const multer = require('multer');
@@ -248,7 +248,13 @@ app.get("/api/test", (req, res) => {
   res.send("¡Vamos bien!");
 });
 
-
+ app.get("/", (req, res) => {
+     res.json({ 
+       status: "ok", 
+       message: "API Zoonito funcionando",
+       timestamp: new Date().toISOString()
+     });
+   });
 
 // Al final del archivo, después de las rutas
 const server = app.listen(PORT, () => console.log(`Servidor corriendo en puerto aca en la parte de consola vsc ${PORT}`));
@@ -291,4 +297,5 @@ io.on('connection', (socket) => {
     console.log('❌ Cliente desconectado:', socket.id);
   });
 });
+
 
