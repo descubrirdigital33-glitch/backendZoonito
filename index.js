@@ -109,7 +109,8 @@ app.get("/api/test", (req, res) => {
 
 
 
-
+// Iniciar servidor
+const server = app.listen(PORT, () => console.log(`Servidor corriendo en puerto ${PORT}`));
 
 // Configurar Socket.IO
 const { Server } = require('socket.io');
@@ -149,8 +150,8 @@ io.on('connection', (socket) => {
     console.log('❌ Cliente desconectado:', socket.id);
   });
 });
-// Iniciar servidor
-const server = app.listen(PORT, () => console.log(`Servidor corriendo en puerto ${PORT}`));
+
+
 
 
 
