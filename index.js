@@ -6,7 +6,6 @@
 // const bodyParser = require("body-parser");
 // const path = require("path");
 
-
 // const authRoutes = require("./routes/authRoutes");
 // const musicRoutes = require("./routes/musicRoutes");
 // const subscriptionRoutes = require("./routes/subscriptionRoutes");
@@ -301,6 +300,7 @@ io.on('connection', (socket) => {
     console.log('❌ Cliente desconectado:', socket.id);
   });
 });
+
 
 
 
