@@ -13,7 +13,7 @@ const sendEmail = async (to, subject, text, html) => {  // ⬅️ Agrega 'html' 
     });
 
     await transporter.sendMail({
-      from: `"MusicApp" <${process.env.SMTP_USER}>`,
+      from: `"Zoonito" <${process.env.SMTP_USER}>`,
       to,
       subject,
       text: text || '',  // ⬅️ Texto plano (opcional)
