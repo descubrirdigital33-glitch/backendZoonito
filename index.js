@@ -130,6 +130,12 @@ const io = new Server(server, {
   transports: ['websocket', 'polling']
 });
 
+// 🎵 Guardamos el último "now playing" de cada radio en memoria,
+// así un oyente que se conecta DESPUÉS de que ya empezó a sonar
+// una canción recibe el estado actual apenas entra al room
+// (si no, se queda sin info hasta el próximo cambio de canción).
+const lastNowPlayingByRadio = {};
+
 io.on('connection', (socket) => {
   console.log('✅ Cliente conectado:', socket.id);
 
@@ -137,6 +143,13 @@ io.on('connection', (socket) => {
     socket.join(`radio-${sessionId}`);
     const room = io.sockets.adapter.rooms.get(`radio-${sessionId}`);
     io.to(`radio-${sessionId}`).emit('listener-count', room ? room.size : 0);
+
+    // Si ya hay un estado de "now playing" guardado para esta radio,
+    // se lo mandamos solo a este socket recién conectado.
+    const lastState = lastNowPlayingByRadio[sessionId];
+    if (lastState) {
+      socket.emit('now-playing', lastState);
+    }
   });
 
   socket.on('leave-radio', ({ sessionId }) => {
@@ -149,17 +162,18 @@ io.on('connection', (socket) => {
     socket.to(`radio-${sessionId}`).emit('receive-live-audio', audioChunk);
   });
 
+  // 🎵 El dueño emite qué canción está sonando (título, artista, play/pause, tiempo).
+  // Lo reenviamos al resto del room (los oyentes) y guardamos el último estado
+  // para los que se conecten después.
+  socket.on('now-playing', (data) => {
+    const { sessionId } = data || {};
+    if (!sessionId) return;
+
+    lastNowPlayingByRadio[sessionId] = data;
+    socket.to(`radio-${sessionId}`).emit('now-playing', data);
+  });
+
   socket.on('disconnect', () => {
     console.log('❌ Cliente desconectado:', socket.id);
   });
 });
-
-
-
-
-
-
-
-
-
-
