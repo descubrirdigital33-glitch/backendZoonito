@@ -50,13 +50,10 @@ io.on("connection", (socket) => {
   });
 
   // 🎵 NUEVO: el dueño emite qué canción está sonando (título, artista, play/pause, tiempo)
-  // y se reenvía a todos los demás sockets de esa sala (los oyentes), igual que el audio.
-  socket.on("now-playing", (data) => {
+  socket.on('now-playing', (data) => {
     const { sessionId } = data;
     if (!sessionId) return;
-    console.log(`🎵 now-playing en radio-${sessionId}:`, data.titulo || data.title || '(sin título)');
-    // socket.to (no io.to) para no reenviárselo también al propio dueño que lo emitió
-    socket.to(`radio-${sessionId}`).emit("now-playing", data);
+    socket.to(`radio-${sessionId}`).emit('now-playing', data);
   });
 
   socket.on("disconnect", (reason) => {
